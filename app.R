@@ -119,7 +119,7 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
     values <- reactiveValues();
     values$edades = data.table("Rango de Edad"=c("0-19","20-64","65+"))
     values$estados = data.table("Estado de inmunidad"=c("No inmune","Recuperado","1 dosis","2 dosis"))
@@ -215,11 +215,35 @@ server <- function(input, output) {
     })
     
     output$downloadData <- downloadHandler(
+        
         filename <- function(){
+            browser()
             paste("model-params.RData")
         },
         content = function(file) {
-            save(values, file = file)
+            
+            edades=values$edades 
+            estados=values$estados 
+            ifr=values$ifr 
+            matrix_ef_contacts=values$matrix_ef_contacts 
+            matrix_ifr=values$matrix_ifr 
+            matrix_pasaje_v=values$matrix_pasaje_v 
+            matrix_porcc=values$matrix_porcc 
+            matrix_porcg=values$matrix_porcg 
+            porc_criticos=values$porc_criticos 
+            porc_graves=values$porc_graves
+            
+            
+            save(edades, 
+                 estados, 
+                 ifr, 
+                 matrix_ef_contacts, 
+                 matrix_ifr, 
+                 matrix_pasaje_v, 
+                 matrix_porcc, 
+                 matrix_porcg, 
+                 porc_criticos, 
+                 porc_graves, file = file)
         }
     )
 }
